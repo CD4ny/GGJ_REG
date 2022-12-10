@@ -46,3 +46,6 @@ prisma/migrations/20221126145002_next_phone/migration.sql
 prisma/migrations/20221126225621_milanes/migration.sql
 .gitignore
 sample.xlsx
+
+package-lock.json
+yarn.lock
