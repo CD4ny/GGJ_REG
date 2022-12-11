@@ -1,76 +1,76 @@
 html,
 body {
-	padding: 0;
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-	background-image: url("../assets/pictures/Frame.svg");
-	color: #020744;
-	font-weight: bold;
-	text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-image: url('../assets/pictures/Frame.svg');
+  color: #020744;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 #backdrop_opacity {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	z-index: 1;
-	filter: opacity(0.85);
-	background: linear-gradient(90deg, #f4f4f4, white);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  filter: opacity(0.85);
+  background: linear-gradient(90deg, #f4f4f4, white);
 }
 
 .logoPic {
-	background-image: url("../assets/pictures/GGJ23_1@10x\ 1.png");
+  background-image: url('../assets/pictures/GGJ23_1@10x\ 1.png');
 }
 
 .GG_color {
-	background-color: #020744;
+  background-color: #020744;
 }
 
 .GG_button {
-	background-color: #020744;
-	color: white !important;
-	transition: all 0.2s ease;
-	text-transform: capitalize;
-	margin-top: auto;
-	width: fit-content;
-	align-self: center;
-	padding: 10px;
-	border: 0;
+  background-color: #020744;
+  color: white !important;
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+  margin-top: auto;
+  width: fit-content;
+  align-self: center;
+  padding: 10px;
+  border: 0;
 }
 
 .GG_button:hover {
-	background-color: #252d90;
-	cursor: pointer;
+  background-color: #252d90;
+  cursor: pointer;
 }
 
 .GG_secondary_button {
-	background-color: #d9d9d9;
-	color: black !important;
-	transition: all 0.2s ease;
-	text-transform: capitalize;
-	margin-top: auto;
-	width: fit-content;
-	align-self: center;
-	padding: 10px;
-	border: 0;
+  background-color: #d9d9d9;
+  color: black !important;
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+  margin-top: auto;
+  width: fit-content;
+  align-self: center;
+  padding: 10px;
+  border: 0;
 }
 
 .GG_secondary_button:hover {
-	background-color: #b3b2b2;
-	cursor: pointer;
+  background-color: #b3b2b2;
+  cursor: pointer;
 }
 
 .progress-bar {
-	background-color: #dcdcdc;
-	height: 10px;
-	border-radius: 10px;
+  background-color: #dcdcdc;
+  height: 10px;
+  border-radius: 10px;
 }
 
 .progress {
-	background-color: #252d90;
+  background-color: #252d90;
 }
 
 button {
-	text-transform: uppercase !important;
+  text-transform: uppercase !important;
 }

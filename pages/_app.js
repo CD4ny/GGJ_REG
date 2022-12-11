@@ -1,18 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
 import { StoreProvider } from 'easy-peasy';
-import Head from "next/head";
-import { useEffect } from "react";
-import "../styles/globals.css";
+import Head from 'next/head';
+import { useEffect } from 'react';
+import '../styles/globals.css';
 import store from '../store/store';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.js");
+    import('bootstrap/dist/js/bootstrap.js');
   }, []);
   return (
     <>
       <StoreProvider store={store}>
-
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link
@@ -26,4 +25,3 @@ function MyApp({ Component, pageProps }) {
   );
 }
 export default MyApp;
-

@@ -1,52 +1,108 @@
-import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import EULA from "../components/RegisterForms/EULA";
-import MembersData from "../components/RegisterForms/MembersData";
-import GeneralData from "../components/RegisterForms/GeneralData";
-import End from "../components/End";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
+import EULA from '../components/RegisterForms/EULA';
+import MembersData from '../components/RegisterForms/GlobalGameJam/MembersData';
+import GeneralData from '../components/RegisterForms/GlobalGameJam/GeneralData';
+import End from '../components/End';
+import { useStoreActions } from 'easy-peasy';
+import IsJuniorModal from '../components/RegisterForms/IsJuniorModal';
+import JuniorForm from '../components/RegisterForms/GlobalGameJamNext/JuniorForm';
+import CustomToast from '../components/CustomToast';
 
 const Register = () => {
-	const cleanData = useStoreActions((state) => state.cleanData);
-	const sendData = useStoreActions((state) => state.sendData);
+  const [isJunior, setIsJunior] = useState(-1);
+  const cleanData = useStoreActions((state) => state.cleanData);
+  const sendData = useStoreActions((state) => state.sendData);
+  const [currentForm, setCurrentForm] = useState(null);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastShow, setToastShow] = useState(false);
 
-	useEffect(() => {
-		cleanData();
-	}, []);
+  useEffect(() => {
+    cleanData();
+    let newdata = forms;
+    newdata[2].form = (
+      <EULA
+        handleNext={handleNext}
+        handleSubmit={handleSubmit}
+        isJunior={isJunior}
+      />
+    );
+    setForms([...newdata]);
+  }, [isJunior]);
 
-	const handleNext = (index) => {
-		setCurrentForm(forms[index].form);
-	};
+  const handleNext = (index) => {
+    setCurrentForm(forms[index].form);
+  };
 
-	const handleSubmit = () => {
-		alert("submit");
-		sendData();
-		setCurrentForm(forms[3].form);
-	};
+  const handleSubmit = () => {
+    alert('submit');
+    sendData(isJunior);
+    setCurrentForm(forms[3].form);
+  };
 
-	const forms = [
-		{ form: <GeneralData handleNext={handleNext} /> },
-		{ form: <MembersData handleNext={handleNext} /> },
-		{ form: <EULA handleNext={handleNext} handleSubmit={handleSubmit} /> },
-		{ form: <End /> },
-	];
+  const [forms, setForms] = useState([
+    {
+      form: (
+        <GeneralData
+          handleNext={handleNext}
+          setIsJunior={setIsJunior}
+          setToastMessage={setToastMessage}
+          setToastShow={setToastShow}
+        />
+      ),
+    },
+    {
+      form: (
+        <MembersData
+          handleNext={handleNext}
+          setToastMessage={setToastMessage}
+          setToastShow={setToastShow}
+        />
+      ),
+    },
+    {
+      form: (
+        <EULA
+          handleNext={handleNext}
+          handleSubmit={handleSubmit}
+          isJunior={isJunior}
+        />
+      ),
+    },
+    { form: <End /> },
+    {
+      form: (
+        <JuniorForm
+          handleNext={handleNext}
+          setIsJunior={setIsJunior}
+          setToastMessage={setToastMessage}
+          setToastShow={setToastShow}
+        />
+      ),
+    },
+  ]);
 
-	const [currentForm, setCurrentForm] = useState(forms[0].form);
-
-	return (
-		<Layout>
-			<div
-				className="px-sm-5 d-flex"
-				style={{
-					background: "linear-gradient(90deg, #F5F5F5 80%, white)",
-					height: "100vh",
-					overflowY: "scroll",
-				}}
-			>
-				<div className={`container mt-5 mt-md-auto `}>{currentForm}</div>
-			</div>
-		</Layout>
-	);
+  if (isJunior === -1)
+    return <IsJuniorModal setIsJunior={setIsJunior} handleNext={handleNext} />;
+  return (
+    <Layout>
+      <div
+        className="px-sm-5 d-flex"
+        style={{
+          background: 'linear-gradient(90deg, #F5F5F5 80%, white)',
+          height: '100vh',
+          overflowY: 'scroll',
+        }}
+      >
+        <div className={`container mt-5 mt-md-auto `}>{currentForm}</div>
+      </div>
+      <CustomToast
+        message={toastMessage}
+        show={toastShow}
+        setToastShow={setToastShow}
+      />
+    </Layout>
+  );
 };
 
 export default Register;
