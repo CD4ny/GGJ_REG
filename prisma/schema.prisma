@@ -10,8 +10,6 @@ datasource db {
   url      = "file:./data.db"
 }
 
-
-// Participant Schema
 model Participant {
     id String @id @unique
 	team Team @relation(fields: [team_id],references: [id_team])

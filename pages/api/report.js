@@ -5,7 +5,14 @@ import fs from 'fs';
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-  if (req.method === 'GET') {
+  const user = 'vertexggj';
+  const pass = 'vertexggj123';
+
+  if (user != req.body.user || pass != req.body.pass) {
+    res.status(404);
+    return;
+  }
+  if (req.method === 'POST') {
     const participants = await prisma.Participant.findMany();
     const teams = await prisma.Team.findMany();
 
@@ -32,47 +39,45 @@ export default async function handle(req, res) {
     // cos['Tel']=0;
     // cos['Externo']=0;
 
+    participants.forEach((i) => {
+      var participant = new Object();
+      participant['CI'] = i.id;
+      participant['Nombre'] = i.name;
+      participant['Genero'] = i.gender;
+      participant['Team'] = teams2obj[i.team_id];
+      participant['Institucion'] = i.institution;
+      participant['Fecha reg'] = i.date;
+      participant['Area'] = i.area;
+      participant['Email'] = i.email;
+      participant['Tel'] = i.phone;
+      participant['Externo'] = i.ext;
 
-   participants.forEach(i => {
-    var participant = new Object
-    participant['CI']=i.id;
-    participant['Nombre']=i.name;
-    participant['Genero']=i.gender;
-    participant['Team']=teams2obj[i.team_id];
-    participant['Institucion']=i.institution;
-    participant['Fecha reg']=i.date;
-    participant['Area']=i.area;
-    participant['Email']=i.email;
-    participant['Tel']=i.phone;
-    participant['Externo']=i.ext;
-    
-    participants2sheet.push(participant);
-   });
+      participants2sheet.push(participant);
+    });
 
-   teams.forEach(i => {
-    var team = new Object
-    team['Nombre']=i.name;
-    team['Descripcion']=i.desc;
-    
-    teams2sheet.push(team);
-   });
-  
-   participants.forEach(i => {
-    var participant = new Object
-    participant['CI']=i.id;
-    participant['Nombre']=i.name;
-    participant['CI']=i.responsibleId;
-    participant['Nombre']=i.responsible;
-    participant['Fecha reg']=i.date;
-    participant['Edad']=i.age;
-    participant['Institucion']=i.institution;
-    participant['Email']=i.email;
-    participant['Tel']=i.phone;
-    participant['Externo']=i.ext;
-    
-    nexter2sheet.push(participant);
-   });
+    teams.forEach((i) => {
+      var team = new Object();
+      team['Nombre'] = i.name;
+      team['Descripcion'] = i.desc;
 
+      teams2sheet.push(team);
+    });
+
+    participants.forEach((i) => {
+      var participant = new Object();
+      participant['CI'] = i.id;
+      participant['Nombre'] = i.name;
+      participant['CI'] = i.responsibleId;
+      participant['Nombre'] = i.responsible;
+      participant['Fecha reg'] = i.date;
+      participant['Edad'] = i.age;
+      participant['Institucion'] = i.institution;
+      participant['Email'] = i.email;
+      participant['Tel'] = i.phone;
+      participant['Externo'] = i.ext;
+
+      nexter2sheet.push(participant);
+    });
 
     const workSheetParticipants = XLSX.utils.json_to_sheet(participants2sheet);
     const workSheetTeams = XLSX.utils.json_to_sheet(teams2sheet);
@@ -80,9 +85,17 @@ export default async function handle(req, res) {
 
     const workBook = XLSX.utils.book_new();
 
-    XLSX.utils.book_append_sheet(workBook, workSheetParticipants, 'Particinpantes');
+    XLSX.utils.book_append_sheet(
+      workBook,
+      workSheetParticipants,
+      'Particinpantes',
+    );
     XLSX.utils.book_append_sheet(workBook, workSheetTeams, 'Teams');
-    XLSX.utils.book_append_sheet(workBook, workSheetNextParticipants, 'Particinpantes Next');
+    XLSX.utils.book_append_sheet(
+      workBook,
+      workSheetNextParticipants,
+      'Particinpantes Next',
+    );
 
     XLSX.writeFile(workBook, './sample.xlsx');
 
@@ -91,7 +104,7 @@ export default async function handle(req, res) {
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'Content-Length': stat.size,
-      'Content-Disposition': 'attachment; filename=Listado.xlsx'
+      'Content-Disposition': 'attachment; filename=Listado.xlsx',
     });
 
     var readStream = fs.createReadStream('./sample.xlsx');
@@ -103,7 +116,6 @@ export default async function handle(req, res) {
     readStream.on('error', function (err) {
       res.end(err);
     });
-
   } else {
     console.log();
     res.send(404);

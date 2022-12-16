@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { action, createStore, thunk } from 'easy-peasy';
 
 const store = createStore({
@@ -30,7 +31,7 @@ const store = createStore({
       state.participants.push({
         id: '',
         name: '',
-        institution: '1',
+        institution: '',
         phone: '',
         email: '',
         area: '',
@@ -60,63 +61,30 @@ const store = createStore({
     state.juniorParticipant[key] = data;
   }),
 
-  sendData: action((state, payload) => {
+  sendData: thunk((actions, payload) => {
     //payload tendra 0 o 1. Si es 1 hay que mandar el junior, si no los otros
-    if (payload === 0) {
-      console.log(
-        JSON.stringify({ team: state.team, participants: state.participants }),
-      );
-    } else {
-      console.log(JSON.stringify({ participant: state.juniorParticipant }));
-    }
-    //TODO: send data
-    // const options = {
-    // 	method: "POST",
-    // 	url: "http://127.0.1:3000/api/reg/team",
-    // 	params: { "": "" },
-    // 	headers: { "Content-Type": "application/json" },
-    // 	data: {
-    // 		team: { name: "Las avispas", desc: "pican y no hacen miel" },
-    // 		participants: [
-    // 			{
-    // 				id: "99013110582",
-    // 				name: "Daniel Chaviano Perez",
-    // 				institution: "UCI",
-    // 				phone: "5356064362",
-    // 				email: "danielcp@estudiantes.uci.cu",
-    // 				area: "Fac-4",
-    // 				ext: false,
-    // 			},
-    // 			{
-    // 				id: "00051967686",
-    // 				name: "Fulanita Martinez Perez",
-    // 				institution: "CUJAE",
-    // 				phone: "5356064332",
-    // 				email: "fmartinez@estudiantes.cujae.cu",
-    // 				area: "Fac-electrica",
-    // 				ext: true,
-    // 			},
-    // 			{
-    // 				id: "00010110101",
-    // 				name: "LaQseBurla Alfaro Manso",
-    // 				institution: "Fajardo",
-    // 				phone: "5356064312",
-    // 				email: "michino@estudiantes.fcm.cu",
-    // 				area: "matasanos",
-    // 				ext: true,
-    // 			},
-    // 		],
-    // 	},
-    // };
+    let data = {};
+    let url = '';
 
-    // axios
-    // 	.request(options)
-    // 	.then(function (response) {
-    // 		console.log(response.data);
-    // 	})
-    // 	.catch(function (error) {
-    // 		console.error(error);
-    // 	});
+    console.log(state);
+
+    if (payload === 0) {
+      url = '/api/reg/team';
+      data = { team: state.team, participants: state.participants };
+    } else {
+      url = '/api/reg/nexter';
+      data = state.juniorParticipant;
+    }
+
+    console.log(data);
+    axios
+      .post(url, data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }),
 });
 

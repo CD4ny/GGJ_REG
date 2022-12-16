@@ -1,13 +1,52 @@
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
-const JuniorForm = ({ handleNext, setIsJunior }) => {
+const JuniorForm = ({
+  handleNext,
+  setIsJunior,
+  setToastMessage,
+  setToastShow,
+}) => {
   const participant = useStoreState((state) => state.juniorParticipant);
   const setParticipant = useStoreActions(
     (actions) => actions.setJuniorParticipant,
   );
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let flag = false;
+    Object.keys(participant).forEach((key) => {
+      if (key !== 'ext' && participant[key].trim() === '') {
+        setToastMessage('No pueden haber campos vacíos');
+        setToastShow(true);
+        flag = true;
+        return;
+      }
+      if (
+        (key === 'id' || key === 'responsibleId') &&
+        participant[key].length !== 11
+      ) {
+        console.log(key);
+        setToastMessage('El carne de identidad debe tener 11 números');
+        setToastShow(true);
+        flag = true;
+        return;
+      }
+      if (key === 'age' && !(participant[key] >= 7 && participant[key] <= 12)) {
+        setToastMessage('La edad del menor debe estar entre 7 y 12');
+        setToastShow(true);
+        flag = true;
+        return;
+      }
+    });
+
+    if (flag) return;
+    setToastShow(false);
+    handleNext(2);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h4 className="bd-title mb-2 mt-0 mt-md-5" id="content">
         Datos del participante
       </h4>
@@ -30,7 +69,7 @@ const JuniorForm = ({ handleNext, setIsJunior }) => {
         <div className="col-6 mb-4">
           <label className="form-label">Carne de Identidad</label>
           <input
-            type="text"
+            type="number"
             name="CI"
             className="form-control"
             value={participant.id}
@@ -54,11 +93,14 @@ const JuniorForm = ({ handleNext, setIsJunior }) => {
       </div>
       <div className="mb-4">
         <label className="form-label">Institución</label>
-        <select className="form-select" aria-label="Default select example">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
+        <input
+          type="text"
+          className="form-control"
+          value={participant.institution}
+          onChange={(e) =>
+            setParticipant({ data: e.target.value, key: 'institution' })
+          }
+        />
       </div>
       <h4 className="bd-title mb-2" id="content">
         Datos del Tutor
@@ -81,7 +123,7 @@ const JuniorForm = ({ handleNext, setIsJunior }) => {
             Carne de identidad
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             value={participant.responsibleId}
             onChange={(e) =>
@@ -163,11 +205,7 @@ const JuniorForm = ({ handleNext, setIsJunior }) => {
         <div className="text-center d-none d-lg-block">
           datos del participante
         </div>
-        <button
-          onClick={() => handleNext(2)}
-          type="button"
-          className="btn  btn-primary GG_button px-5"
-        >
+        <button type="submit" className="btn  btn-primary GG_button px-5">
           Siguiente
         </button>
       </div>
