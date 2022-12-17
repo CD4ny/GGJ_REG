@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const id_check = await prisma.ParticipantNext.findFirst({
-      where: { id: req.body.id }
+      where: { id: req.body.id },
     });
 
     if (id_check !== null) {
@@ -13,12 +13,10 @@ export default async function handler(req, res) {
       return;
     }
     const nexter = await prisma.ParticipantNext.create({ data: req.body });
-    
-    res.send(200);
+
+    return res.status(200);
   } else {
     console.log();
-    res.send(404);
+    return res.status(404);
   }
-
-  res.send();
 }

@@ -27,6 +27,7 @@ const LoginForm = ({ handleSubmit, user, setUser, password, setPassword }) => {
         />
       </div>
       <button
+        type="button"
         onClick={handleSubmit}
         className="btn w-100 btn-primary GG_button"
       >

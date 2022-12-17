@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     // Check Team Name
     const team_check = await prisma.team.findFirst({
-      where: { name: req.body.team.name }
+      where: { name: req.body.team.name },
     });
     if (team_check != null) {
       res.status(409);
@@ -15,15 +15,14 @@ export default async function handler(req, res) {
     }
     //Check Participants Data
     var user_found = req.body.participants.every(async (item) => {
-      
       const id_check = await prisma.participant.findFirst({
-        where: { id: item.id }
+        where: { id: item.id },
       });
-      console.log(id_check)
+      console.log(id_check);
       const email_check = await prisma.participant.findFirst({
-        where: { email: item.email }
+        where: { email: item.email },
       });
-      console.log(email_check)
+      console.log(email_check);
       if (id_check !== null || email_check !== null) {
         return true;
       }
@@ -31,7 +30,7 @@ export default async function handler(req, res) {
       return false;
     });
     // console.log(user_found);
-    if(user_found!==true){
+    if (user_found !== true) {
       res.status(409);
       res.send('Error participant already found!');
       return;

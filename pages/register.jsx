@@ -12,7 +12,6 @@ import CustomToast from '../components/CustomToast';
 const Register = () => {
   const [isJunior, setIsJunior] = useState(-1);
   const cleanData = useStoreActions((state) => state.cleanData);
-  const sendData = useStoreActions((state) => state.sendData);
   const [currentForm, setCurrentForm] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
   const [toastShow, setToastShow] = useState(false);
@@ -20,24 +19,12 @@ const Register = () => {
   useEffect(() => {
     cleanData();
     let newdata = forms;
-    newdata[2].form = (
-      <EULA
-        handleNext={handleNext}
-        handleSubmit={handleSubmit}
-        isJunior={isJunior}
-      />
-    );
+    newdata[2].form = <EULA handleNext={handleNext} isJunior={isJunior} />;
     setForms([...newdata]);
   }, [isJunior]);
 
   const handleNext = (index) => {
     setCurrentForm(forms[index].form);
-  };
-
-  const handleSubmit = () => {
-    alert('submit');
-    sendData(isJunior);
-    setCurrentForm(forms[3].form);
   };
 
   const [forms, setForms] = useState([
@@ -61,13 +48,7 @@ const Register = () => {
       ),
     },
     {
-      form: (
-        <EULA
-          handleNext={handleNext}
-          handleSubmit={handleSubmit}
-          isJunior={isJunior}
-        />
-      ),
+      form: <EULA handleNext={handleNext} isJunior={isJunior} />,
     },
     { form: <End /> },
     {

@@ -11,7 +11,11 @@ const MembersData = ({ handleNext, setToastMessage, setToastShow }) => {
 
     let flag = false;
     Object.keys(participants[cont]).forEach((key) => {
-      if (key !== 'ext' && participants[cont][key].trim() === '') {
+      if (
+        key !== 'ext' &&
+        key !== 'area' &&
+        participants[cont][key].trim() === ''
+      ) {
         setToastMessage('No pueden haber campos vacíos');
         setToastShow(true);
         flag = true;
@@ -31,16 +35,6 @@ const MembersData = ({ handleNext, setToastMessage, setToastShow }) => {
       return;
     }
     setCont(cont + 1);
-  };
-
-  const validator = () => {
-    if (team.name.trim() === '' || team.desc.trim() === '') {
-      setToastMessage('No pueden haber campos vacíos');
-      setToastShow(true);
-    } else {
-      setToastShow(false);
-      handleNext(1);
-    }
   };
 
   return (
@@ -124,16 +118,29 @@ const MembersData = ({ handleNext, setToastMessage, setToastShow }) => {
       </div>
       <div className="mb-4">
         <label className="form-label">Institución</label>
-        <select className="form-select" aria-label="Default select example">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
+        <input
+          type="text"
+          className="form-control"
+          value={participants[cont].institution}
+          onChange={(e) =>
+            setParticipant({
+              index: cont,
+              data: e.target.value,
+              key: 'institution',
+            })
+          }
+        />
       </div>
       <div className="mb-4 row">
         <div className="col-8">
           <label htmlFor="exampleFormControlInput1" className="form-label">
             área
+            <span
+              className="text-secondary ms-2"
+              style={{ textTransform: 'lowercase' }}
+            >
+              (opcional)
+            </span>
           </label>
           <input
             type="text"
