@@ -39,7 +39,7 @@ const JuniorForm = ({
         return;
       }
     });
-
+    console.log
     if (flag) return;
     setToastShow(false);
     handleNext(2);

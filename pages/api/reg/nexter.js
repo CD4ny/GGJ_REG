@@ -1,22 +1,26 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from "@prisma/client";
 
-const prisma = new PrismaClient();
+let prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const id_check = await prisma.ParticipantNext.findFirst({
+  if (req.method === "POST") {
+    let id_check = await prisma.ParticipantNext.count({
       where: { id: req.body.id },
     });
 
-    if (id_check !== null) {
-      res.send('Error kid already registered!');
+    if (id_check > 0) {
+      res.send("Error kid already registered!");
       return;
     }
-    const nexter = await prisma.ParticipantNext.create({ data: req.body });
 
-    return res.status(200);
+    let data = req.body
+    data["age"] = parseInt(data["age"]);
+    let nexter = await prisma.ParticipantNext.create({ data });
+
+    res.status(200);
+    
   } else {
-    console.log();
-    return res.status(404);
+    res.status(404);
   }
+  res.send();
 }

@@ -29,7 +29,7 @@ const IsJuniorModal = ({ setIsJunior, handleNext }) => {
         <div className="modal-content mt-5">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="staticBackdropLabel">
-              No se que poner aqui
+              Seleccione concurso a participar
             </h1>
           </div>
           <div className="modal-body">

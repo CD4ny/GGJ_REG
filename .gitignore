@@ -49,3 +49,5 @@ sample.xlsx
 
 package-lock.json
 yarn.lock
+prisma/data.db
+prisma/data.db
